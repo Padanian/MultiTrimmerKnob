@@ -3,7 +3,7 @@
     Const Pi As Double = Math.PI
         Dim x1, y1, x2, y2 As Integer
     Dim xp1, yp1, xp2, yp2, xp3, yp3, xp4, yp4 As Int32
-    Private m_value As Integer
+    Private m_value As Decimal
     Private m_minimum As Integer
     Private m_maximum As Integer
     Dim centreX As Double = 32
@@ -17,11 +17,11 @@
     Dim blinkingLedTimer As New Timer
     Dim mouseDownLocation As New Point
     Dim eventString As String
-    Public Property value As Integer
+    Public Property value As Decimal
         Get
             value = m_value
         End Get
-        Set(value As Integer)
+        Set(value As Decimal)
             If value >= minimum And value <= maximum Then
                 m_value = value
             Else
@@ -203,21 +203,23 @@
         If eventString = "L" Then
             Dim mouseX As Integer = e.X
             Dim mouseY As Integer = e.Y
+            Dim variation As Decimal = maximum / 20
+
             If mouseX > mouseDownLocation.X And mouseY < centreY Then
-                value += maximum / 20
+                value += variation
                 mouseDownLocation = New Point(e.X, e.Y)
-            ElseIf mouseX < mouseDownLocation.X And mouseY > centreY Then
-                value += maximum / 20
+                ElseIf mouseX < mouseDownLocation.X And mouseY > centreY Then
+                value += variation
                 mouseDownLocation = New Point(e.X, e.Y)
-            ElseIf mouseX > mouseDownLocation.X And mouseY > centreY Then
-                value -= maximum / 20
+                ElseIf mouseX > mouseDownLocation.X And mouseY > centreY Then
+                value -= variation
                 mouseDownLocation = New Point(e.X, e.Y)
-            ElseIf mouseX < mouseDownLocation.X And mouseY < centreY Then
-                value -= maximum / 20
+                ElseIf mouseX < mouseDownLocation.X And mouseY < centreY Then
+                value -= variation
                 mouseDownLocation = New Point(e.X, e.Y)
-            End If
-        Else
-            Exit Sub
+                End If
+            Else
+                Exit Sub
         End If
         Me.Refresh()
     End Sub
